@@ -6,7 +6,7 @@ import java.awt.*;
 public class Main {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        frame.setSize(500,600);
+        frame.setSize(400,600);
 
         Screen screen = new Screen();
         screen.setBackground(new Color(132, 250, 255));
