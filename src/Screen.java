@@ -9,7 +9,7 @@ public class Screen extends JPanel {
 
     boolean dropping = false;
 
-    Ball ball1 = new Ball();
+    Ball ball = new Ball();
 
     Pit redPit = new Pit(new Color(150,0,0), 300);
 
@@ -47,11 +47,11 @@ public class Screen extends JPanel {
                 if(e.getKeyCode() == 32){
                     dropping = true;
                     if(ballList.get(ballList.size()-2).getColor() == Color.RED){
-                        if(ballList.get(ballList.size()-2).getY() > 300 && ballList.get(ballList.size()-2).getY() < 500){
+                        if(ballList.get(ballList.size()-2).getY() < redPit.getY() + redPit.getH() && ballList.get(ballList.size()-2).getY() > redPit.getY()){
                             points++;
                         }
                     }else{
-                        if(ballList.get(ballList.size()-2).getY() > 500 && ballList.get(ballList.size()-2).getY() < 700){
+                        if(ballList.get(ballList.size()-2).getY() < bluePit.getH() + bluePit.getY() && ballList.get(ballList.size()-2).getY() > bluePit.getY()){
                             points++;
                         }
                     }
@@ -79,7 +79,7 @@ public class Screen extends JPanel {
             ballList.get(i).draw(g);
         }
 
-        ball1.draw(g);
+        ball.draw(g);
 
         g.setColor(new Color(100,100,100));
         g.fillRect(170,20,40,40);
@@ -93,6 +93,18 @@ public class Screen extends JPanel {
 
         if(timer == 10){
             ballList.get(ballList.size()-1).setSpeed(ballList.get(ballList.size()-1).getSpeed()*2);
+        }
+
+        if(timer % 5 == 0){
+            redPit.setH(redPit.getH()-50);
+            bluePit.setH(bluePit.getH()-50);
+        }
+
+        if(timer == 0){
+            g.setColor(Color.WHITE);
+            g.drawRect(100,350,200,100);
+            g.setColor(Color.BLACK);
+            g.drawString("Time is up! Your final score was " + points + " points. Restart to try aagin.", 150,380);
         }
 
         if(dropping) {
