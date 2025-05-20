@@ -1,22 +1,26 @@
 import java.awt.*;
 
-public class Bomb{
+public class Ball {
 
     private int size, x, y, speed;
     private Color color;
 
-    public Bomb(){
-        x = 0;
-        y = 0;
+    public Ball(){
+        x = 180;
+        y = 30;
         size = 20;
         speed = 10;
-        color = new Color(0,0,0,0);
+        int random = (int)(Math.random()*2) + 1;
+        if(random ==1){
+            color = Color.RED;
+        }else{
+            color = Color.BLUE;
+        }
     }
 
     public void draw(Graphics g){
-        g.setColor(Color.BLACK);
+        g.setColor(color);
         g.fillOval(x,y,size,size);
-        //super.draw(g);
     }
 
     public void drop(){

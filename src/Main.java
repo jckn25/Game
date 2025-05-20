@@ -6,10 +6,10 @@ import java.awt.*;
 public class Main {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        frame.setSize(400,600);
+        frame.setSize(400,800);
 
         Screen screen = new Screen();
-        screen.setBackground(new Color(132, 250, 255));
+        screen.setBackground(new Color(187, 193, 193));
 
         frame.add(screen);
         frame.setVisible(true);

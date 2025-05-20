@@ -5,17 +5,23 @@ import java.util.*;
 
 public class Screen extends JPanel {
 
-    Brainrot tralalero = new Brainrot(100, 520,50, 10,new Color(62, 169, 213));
+    ArrayList<Ball> ballList = new ArrayList<>();
 
-    Bombardiro bombardiro = new Bombardiro(10,70,50,10,new Color(39, 112, 11));
+    boolean dropping = false;
 
-    ArrayList<Bomb> bombList = new ArrayList<Bomb>();
+    Ball ball1 = new Ball();
+
+    Pit redPit = new Pit(new Color(150,0,0), 300);
+
+    Pit bluePit = new Pit(new Color(0,0,150), 500);
+
+    static int points = 0;
+
+    static double timer = 30;
 
     public Screen(){
 
         setFocusable(true);
-
-        //bombList.add(new Bomb());
 
          /* Key codes
             Left arrow = 37
@@ -25,45 +31,30 @@ public class Screen extends JPanel {
             W = 87
             A = 65
             S = 83
-            D = 68 */
+            D = 68
+            Space = 32
+            */
+
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                //System.out.println(e.getKeyCode());
+                System.out.println(e.getKeyCode());
 
-                int num = e.getKeyCode();
-                if(num == 37){
-                    System.out.println("Bomardiro going left");
-                    bombardiro.moveLeft();
-                }
-                if(num == 39){
-                    System.out.println("Bombardiro going right");
-                    bombardiro.moveRight();
-                }
+                ballList.add(new Ball());
 
-                if(num == 65){
-                    System.out.println("Tralalero moving left");
-                    tralalero.moveLeft();
-                }
-                if(num == 68){
-                    System.out.println("Tralalero moving right");
-                    tralalero.moveRight();
-                }
+                System.out.println(points);
 
-                if(num == 40){
-                    System.out.println("Bombardiro bombing gaza");
-                    bombList.add(new Bomb());
-
-                    bombList.get(bombList.size() - 1).setColor(Color.BLACK);
-
-                    bombList.get(bombList.size() - 1).setX(bombardiro.getX());
-                    bombList.get(bombList.size() - 1).setY(bombardiro.getY());
-
-                    //for(int i = 0; i < 100; i++) {
-                    //    bombList.get(bombList.size() - 1).drop();
-                    //}
-
-                    bombList.get(bombList.size() - 1).setColor(new Color(0,0,0,0));
+                if(e.getKeyCode() == 32){
+                    dropping = true;
+                    if(ballList.get(ballList.size()-2).getColor() == Color.RED){
+                        if(ballList.get(ballList.size()-2).getY() > 300 && ballList.get(ballList.size()-2).getY() < 500){
+                            points++;
+                        }
+                    }else{
+                        if(ballList.get(ballList.size()-2).getY() > 500 && ballList.get(ballList.size()-2).getY() < 700){
+                            points++;
+                        }
+                    }
                 }
             }
         });
@@ -81,15 +72,35 @@ public class Screen extends JPanel {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        tralalero.draw(g);
+        redPit.draw(g);
+        bluePit.draw(g);
 
-        bombardiro.draw(g);
-
-        for(int i = 0; i < bombList.size(); i++) {
-            bombList.get(bombList.size() - 1).draw(g);
+        for(int i = 0; i < ballList.size(); i++){
+            ballList.get(i).draw(g);
         }
 
-        bombList.get(bombList.size() - 1).drop();
+        ball1.draw(g);
+
+        g.setColor(new Color(100,100,100));
+        g.fillRect(170,20,40,40);
+
+        g.setColor(Color.BLACK);
+        g.drawString("Points: " + points, 50,50);
+
+        g.drawString((int)timer + " seconds left",50,100);
+
+        timer -= 0.01;
+
+        if(timer == 10){
+            ballList.get(ballList.size()-1).setSpeed(ballList.get(ballList.size()-1).getSpeed()*2);
+        }
+
+        if(dropping) {
+            ballList.get(ballList.size()-1).drop();
+            for(int i = 0; i < ballList.size()-1; i++){
+                ballList.get(i).setColor(new Color(0,0,0,0));
+            }
+        }
 
         //pausing the computer
         try {
@@ -102,4 +113,5 @@ public class Screen extends JPanel {
         //looping paintComponent
         repaint();
     }
+
 }
